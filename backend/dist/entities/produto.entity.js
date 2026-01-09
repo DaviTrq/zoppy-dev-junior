@@ -39,7 +39,7 @@ __decorate([
 ], Produto.prototype, "descricao", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.DECIMAL(10, 2),
+        type: sequelize_typescript_1.DataType.DECIMAL(15, 2),
         allowNull: false,
     }),
     __metadata("design:type", Number)

@@ -26,7 +26,7 @@ export class Produto extends Model<Produto> {
   descricao: string;
 
   @Column({
-    type: DataType.DECIMAL(10, 2),
+    type: DataType.DECIMAL(15, 2),
     allowNull: false,
   })
   preco: number;

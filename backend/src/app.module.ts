@@ -10,11 +10,11 @@ import { ProdutoService } from './services/produto.service';
 @Module({
   imports: [
     SequelizeModule.forRoot({
-      dialect: 'mysql',
+      dialect: 'postgres',
       host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT) || 3306,
-      username: process.env.DB_USERNAME || 'root',
-      password: process.env.DB_PASSWORD || 'root123',
+      port: parseInt(process.env.DB_PORT) || 5432,
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_DATABASE || 'zoppy',
       models: [Cliente, Produto],
       autoLoadModels: true,

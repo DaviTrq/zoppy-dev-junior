@@ -22,7 +22,7 @@ Este projeto implementa um **CRUD completo** para gerenciamento de clientes e pr
 
 ### Backend
 - **NestJS 10** - Framework Node.js robusto
-- **MySQL 8** - Banco de dados relacional
+- **PostgreSQL 15** - Banco de dados relacional
 - **Sequelize** - ORM para TypeScript
 - **Docker** - Containerização
 - **Jest** - Testes unitários
@@ -50,11 +50,11 @@ cd zoppy-desenvolvedor-junior
 
 ### 2️⃣ Inicie o Banco de Dados
 ```bash
-# Suba o MySQL com Docker
+# Suba o PostgreSQL com Docker
 docker-compose up -d
 
 # Aguarde ~30s para inicialização completa
-docker-compose logs mysql
+docker-compose logs postgres
 ```
 
 ### 3️⃣ Configure o Backend
@@ -104,7 +104,7 @@ zoppy-desenvolvedor-junior/
 │       ├── pages/          # Componentes de tela
 │       ├── services/       # Comunicação com API
 │       └── models/         # Interfaces TypeScript
-├──  docker-compose.yml    # Configuração MySQL
+├──  docker-compose.yml    # Configuração PostgreSQL
 └──  README.md            # Este arquivo
 ```
 
@@ -144,7 +144,7 @@ zoppy-desenvolvedor-junior/
 
 ## Solução de Problemas
 
-### MySQL não inicia
+### PostgreSQL não inicia
 ```bash
 docker-compose down
 docker-compose up -d
