@@ -64,8 +64,8 @@ npm install
 npm run start:dev
 ```
 
-** Backend disponível em:** http://localhost:3000  
-** Documentação Swagger:** http://localhost:3000/api
+**Backend disponível em:** http://localhost:3000  
+**Documentação Swagger:** http://localhost:3000/api
 
 ### 4️⃣ Configure o Frontend
 ```bash
