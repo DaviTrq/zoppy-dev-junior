@@ -28,13 +28,10 @@ let ProdutoController = class ProdutoController {
     async createProduct(createProdutoDto) {
         return await this.produtoService.create(createProdutoDto);
     }
-    async getProducts(page, limit, search, minPrice, maxPrice, clienteId, sortBy, sortOrder) {
-        const validatedPage = this.validatePage(page);
-        const validatedLimit = this.validateLimit(limit);
-        const validatedSearch = this.validateSearch(search);
-        const validatedPriceRange = this.validatePriceRange(minPrice, maxPrice);
-        const validatedSort = this.validateSort(sortBy, sortOrder);
-        return await this.produtoService.findAll(validatedPage, validatedLimit, validatedSearch, validatedPriceRange.minPrice, validatedPriceRange.maxPrice, clienteId, validatedSort.sortBy, validatedSort.sortOrder);
+    async getProducts(page, limit, search) {
+        const pageNum = page ? parseInt(page) : 1;
+        const limitNum = limit ? parseInt(limit) : 10;
+        return await this.produtoService.findAll(pageNum, limitNum, search);
     }
     async getProductById(id) {
         return await this.produtoService.findOne(id);
@@ -65,13 +62,7 @@ let ProdutoController = class ProdutoController {
         if (!search)
             return undefined;
         const trimmed = search.trim();
-        if (trimmed.length > 100) {
-            throw new common_1.BadRequestException('Search term too long (max: 100 characters)');
-        }
-        if (trimmed.length < 2) {
-            throw new common_1.BadRequestException('Search term too short (min: 2 characters)');
-        }
-        return trimmed;
+        return trimmed.length > 0 ? trimmed : undefined;
     }
     validatePriceRange(minPrice, maxPrice) {
         if (minPrice && minPrice < 0) {
@@ -110,24 +101,11 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'List products with pagination and filters' }),
-    (0, swagger_1.ApiQuery)({ name: 'page', required: false, description: 'Page number (min: 1)' }),
-    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, description: `Items per page (max: ${100})` }),
-    (0, swagger_1.ApiQuery)({ name: 'search', required: false, description: 'Search by name or description' }),
-    (0, swagger_1.ApiQuery)({ name: 'minPrice', required: false, description: 'Minimum price filter' }),
-    (0, swagger_1.ApiQuery)({ name: 'maxPrice', required: false, description: 'Maximum price filter' }),
-    (0, swagger_1.ApiQuery)({ name: 'clienteId', required: false, description: 'Filter by client ID' }),
-    (0, swagger_1.ApiQuery)({ name: 'sortBy', required: false, description: 'Sort field: nome, preco, createdAt' }),
-    (0, swagger_1.ApiQuery)({ name: 'sortOrder', required: false, description: 'Sort order: ASC, DESC' }),
-    __param(0, (0, common_1.Query)('page', new common_1.ParseIntPipe({ optional: true }))),
-    __param(1, (0, common_1.Query)('limit', new common_1.ParseIntPipe({ optional: true }))),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __param(2, (0, common_1.Query)('search')),
-    __param(3, (0, common_1.Query)('minPrice', new common_1.ParseIntPipe({ optional: true }))),
-    __param(4, (0, common_1.Query)('maxPrice', new common_1.ParseIntPipe({ optional: true }))),
-    __param(5, (0, common_1.Query)('clienteId', new common_1.ParseIntPipe({ optional: true }))),
-    __param(6, (0, common_1.Query)('sortBy')),
-    __param(7, (0, common_1.Query)('sortOrder')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number, String, Number, Number, Number, String, String]),
+    __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", Promise)
 ], ProdutoController.prototype, "getProducts", null);
 __decorate([

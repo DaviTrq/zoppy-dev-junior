@@ -59,7 +59,7 @@ describe('ProdutoController', () => {
                 totalPages: 1,
             };
             mockProdutoService.findAll.mockResolvedValue(mockResponse);
-            const result = await controller.getProducts(1, 10, 'Produto');
+            const result = await controller.getProducts('1', '10', 'Produto');
             expect(service.findAll).toHaveBeenCalledWith(1, 10, 'Produto');
             expect(result).toEqual(mockResponse);
         });

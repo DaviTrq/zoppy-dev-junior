@@ -70,7 +70,7 @@ export class RateLimitMiddleware implements NestMiddleware {
 
   private isSearchRequest(req: Request): boolean {
     return req.method === 'GET' && 
-           (req.query.search || req.query.filter || req.query.q);
+           !!(req.query.search || req.query.filter || req.query.q);
   }
 
   private cleanExpiredEntries(now: number) {

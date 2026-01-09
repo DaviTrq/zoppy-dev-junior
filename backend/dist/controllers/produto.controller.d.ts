@@ -8,7 +8,7 @@ export declare class ProdutoController {
     private readonly DEFAULT_PAGE;
     constructor(produtoService: ProdutoService);
     createProduct(createProdutoDto: CreateProdutoDto): Promise<import("../entities/produto.entity").Produto>;
-    getProducts(page?: number, limit?: number, search?: string, minPrice?: number, maxPrice?: number, clienteId?: number, sortBy?: string, sortOrder?: 'ASC' | 'DESC'): Promise<{
+    getProducts(page?: string, limit?: string, search?: string): Promise<{
         data: import("../entities/produto.entity").Produto[];
         total: number;
         page: number;

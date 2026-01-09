@@ -35,39 +35,18 @@ export class ProdutoController {
 
   @Get()
   @ApiOperation({ summary: 'List products with pagination and filters' })
-  @ApiQuery({ name: 'page', required: false, description: 'Page number (min: 1)' })
-  @ApiQuery({ name: 'limit', required: false, description: `Items per page (max: ${100})` })
-  @ApiQuery({ name: 'search', required: false, description: 'Search by name or description' })
-  @ApiQuery({ name: 'minPrice', required: false, description: 'Minimum price filter' })
-  @ApiQuery({ name: 'maxPrice', required: false, description: 'Maximum price filter' })
-  @ApiQuery({ name: 'clienteId', required: false, description: 'Filter by client ID' })
-  @ApiQuery({ name: 'sortBy', required: false, description: 'Sort field: nome, preco, createdAt' })
-  @ApiQuery({ name: 'sortOrder', required: false, description: 'Sort order: ASC, DESC' })
   async getProducts(
-    @Query('page', new ParseIntPipe({ optional: true })) page?: number,
-    @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
     @Query('search') search?: string,
-    @Query('minPrice', new ParseIntPipe({ optional: true })) minPrice?: number,
-    @Query('maxPrice', new ParseIntPipe({ optional: true })) maxPrice?: number,
-    @Query('clienteId', new ParseIntPipe({ optional: true })) clienteId?: number,
-    @Query('sortBy') sortBy?: string,
-    @Query('sortOrder') sortOrder?: 'ASC' | 'DESC',
   ) {
-    const validatedPage = this.validatePage(page);
-    const validatedLimit = this.validateLimit(limit);
-    const validatedSearch = this.validateSearch(search);
-    const validatedPriceRange = this.validatePriceRange(minPrice, maxPrice);
-    const validatedSort = this.validateSort(sortBy, sortOrder);
-
+    const pageNum = page ? parseInt(page) : 1;
+    const limitNum = limit ? parseInt(limit) : 10;
+    
     return await this.produtoService.findAll(
-      validatedPage,
-      validatedLimit,
-      validatedSearch,
-      validatedPriceRange.minPrice,
-      validatedPriceRange.maxPrice,
-      clienteId,
-      validatedSort.sortBy,
-      validatedSort.sortOrder
+      pageNum,
+      limitNum,
+      search
     );
   }
 
@@ -117,13 +96,7 @@ export class ProdutoController {
   private validateSearch(search?: string): string | undefined {
     if (!search) return undefined;
     const trimmed = search.trim();
-    if (trimmed.length > 100) {
-      throw new BadRequestException('Search term too long (max: 100 characters)');
-    }
-    if (trimmed.length < 2) {
-      throw new BadRequestException('Search term too short (min: 2 characters)');
-    }
-    return trimmed;
+    return trimmed.length > 0 ? trimmed : undefined;
   }
 
   private validatePriceRange(minPrice?: number, maxPrice?: number) {

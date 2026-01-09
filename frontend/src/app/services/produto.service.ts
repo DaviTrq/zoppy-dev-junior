@@ -65,7 +65,7 @@ export class ProdutoService {
   }
 
   private invalidateCache() {
-    // Could implement more sophisticated caching here
-    this.getProdutos().subscribe();
+    // Limpa o cache para forçar nova busca
+    this.productsCache.next([]);
   }
 }
