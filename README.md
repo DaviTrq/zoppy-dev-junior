@@ -9,14 +9,14 @@ Este projeto implementa um **CRUD completo** para gerenciamento de clientes e pr
 
 ### 📄 Funcionalidades Principais
 
-- ✅ **CRUD Completo** - Create, Read, Update, Delete
-- 🔍 **Busca Avançada** - Filtros inteligentes com debounce
-- 📄 **Paginação** - Navegação eficiente entre registros
-- 🔗 **Relacionamentos** - Produtos vinculados a clientes
-- 📱 **Design Responsivo** - Mobile-first com Tailwind CSS
-- 🛡️ **Segurança** - Rate limiting e validações robustas
-- 🧪 **Testes** - Cobertura de +50% com Jest
-- 📚 **Documentação** - Swagger/OpenAPI integrado
+-  **CRUD Completo** - Create, Read, Update, Delete
+-  **Busca Avançada** - Filtros inteligentes com debounce
+-  **Paginação** - Navegação eficiente entre registros
+-  **Relacionamentos** - Produtos vinculados a clientes
+-  **Design Responsivo** - Mobile-first com Tailwind CSS
+-  **Segurança** - Rate limiting e validações robustas
+-  **Testes** - Cobertura de +50% com Jest
+-  **Documentação** - Swagger/OpenAPI integrado
 
 ## Stacks
 
@@ -64,8 +64,8 @@ npm install
 npm run start:dev
 ```
 
-**✅ Backend disponível em:** http://localhost:3000  
-**📚 Documentação Swagger:** http://localhost:3000/api
+** Backend disponível em:** http://localhost:3000  
+** Documentação Swagger:** http://localhost:3000/api
 
 ### 4️⃣ Configure o Frontend
 ```bash
@@ -74,9 +74,9 @@ npm install
 npm start
 ```
 
-**✅ Frontend disponível em:** http://localhost:4200
+** Frontend disponível em:** http://localhost:4200
 
-## 🧪 Executar Testes
+##  Executar Testes
 
 ```bash
 # Testes unitários
@@ -91,7 +91,7 @@ npm run test:cov
 
 ```
 zoppy-desenvolvedor-junior/
-├── 🗄️ backend/              # API NestJS
+├──  backend/              # API NestJS
 │   ├── src/
 │   │   ├── controllers/     # Endpoints REST
 │   │   ├── services/        # Lógica de negócio
@@ -99,16 +99,16 @@ zoppy-desenvolvedor-junior/
 │   │   ├── dto/            # Validação de dados
 │   │   └── middleware/     # Rate limiting
 │   └── test/               # Testes unitários
-├── 🎨 frontend/             # SPA Angular
+├──  frontend/             # SPA Angular
 │   └── src/app/
 │       ├── pages/          # Componentes de tela
 │       ├── services/       # Comunicação com API
 │       └── models/         # Interfaces TypeScript
-├── 🐳 docker-compose.yml    # Configuração MySQL
-└── 📖 README.md            # Este arquivo
+├──  docker-compose.yml    # Configuração MySQL
+└──  README.md            # Este arquivo
 ```
 
-## 🎨 Design System
+##  Design System
 
 ### Cores Zoppy (Com base no site)
 - **Primário:** `#7b3dff` (Roxo Zoppy)
@@ -121,7 +121,7 @@ zoppy-desenvolvedor-junior/
 - **Formulários Validados** - Feedback em tempo real
 - **Paginação Avançada** - Navegação otimizada
 
-## 🛡️ Segurança e Performance
+##  Segurança e Performance
 
 ### Limitações Implementadas
 - **Rate Limiting:** 1000 req/15min (geral), 100 req/15min (busca)
@@ -135,14 +135,14 @@ zoppy-desenvolvedor-junior/
 - **Cache** com BehaviorSubject
 - **Memory Leak Prevention** (takeUntil)
 
-## 📊 Cobertura de Testes
+##  Cobertura de Testes
 
 - **Branches:** 50%+
 - **Functions:** 50%+
 - **Lines:** 50%+
 - **Statements:** 50%+
 
-## 🔧 Solução de Problemas
+## Solução de Problemas
 
 ### MySQL não inicia
 ```bash
@@ -165,27 +165,7 @@ cd backend && npm install
 cd frontend && npm install
 ```
 
-## 🏆 Desafios Técnicos Concluídos
-
-### ✅ Requisitos Obrigatórios
-- [x] Backend NestJS 10
-- [x] Frontend Angular 19
-- [x] Banco MySQL persistente
-- [x] Pelo menos 2 telas (4 implementadas)
-
-### ✅ Desafios Extras - Frontend
-- [x] RxJS Observables para estado
-- [x] TailwindCSS para estilização
-- [x] Abordagem Mobile First
-- [x] Filtros para listagem
-
-### ✅ Desafios Extras - Backend
-- [x] Testes Jest com +50% cobertura
-- [x] Docker para containerização
-- [x] Banco de dados efetivo
-- [x] Limitação de acesso a dados
-
-## 👨💻 Desenvolvedor
+## Desenvolvedor
 
 **Davi Torquato**  
 - Email: [davitrqto@gmail.com]
@@ -194,7 +174,7 @@ cd frontend && npm install
 
 ---
 
-### 📈 Aprendizados e Evolução
+### Aprendizados e Evolução
 
 Este projeto foi fundamental para minha evolução técnica, permitindo aprofundar conhecimentos em:
 
