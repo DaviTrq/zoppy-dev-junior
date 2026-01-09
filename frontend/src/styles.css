@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply font-medium py-2 px-4 transition-all duration-200;
+  }
+  
+  .btn-primary {
+    @apply btn bg-blue-600 text-white;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-slate-600 text-white;
+  }
+  
+  .btn-danger {
+    @apply btn bg-red-600 text-white;
+  }
+  
+  .form-input {
+    @apply w-full px-4 py-3 bg-slate-700 border border-slate-600 text-white placeholder-slate-400;
+  }
+  
+  .form-label {
+    @apply block text-sm font-medium text-slate-300 mb-2 uppercase tracking-wide;
+  }
+  
+  .card {
+    @apply bg-slate-800 shadow-xl border border-slate-700 p-6;
+  }
+  
+  .table-row {
+    @apply border-b border-slate-700;
+  }
+  
+  .table-row-even {
+    @apply bg-slate-800 border-b border-slate-700;
+  }
+  
+  .table-row-odd {
+    @apply bg-slate-900 border-b border-slate-700;
+  }
+  
+  .table-header {
+    @apply bg-slate-900 text-slate-400 font-medium text-xs uppercase tracking-wider;
+  }
+  
+  .page-container {
+    @apply min-h-screen bg-slate-900 sm:px-8 lg:px-16 xl:px-24;
+  }
+  
+  .page-header {
+    @apply mb-6 sm:mb-8 -ml-2 px-2 sm:px-2 pt-8 sm:pt-10;
+  }
+  
+  .page-title {
+    @apply text-3xl font-bold text-white mb-2;
+  }
+  
+  .link-back {
+    @apply inline-flex items-center gap-2 px-3 py-2 bg-slate-700 text-slate-300 text-sm font-medium;
+  }
+  
+  .text-primary {
+    @apply text-white font-medium;
+  }
+  
+  .text-secondary {
+    @apply text-slate-400;
+  }
+  
+  .text-muted {
+    @apply text-slate-500;
+  }
+  
+  .empty-state {
+    @apply text-center py-12 text-slate-500;
+  }
+  
+  .form-container {
+    @apply px-4 sm:px-6;
+  }
+  
+  .form-wrapper {
+    @apply w-full;
+  }
+  
+  .form-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
+  }
+  
+  .form-actions {
+    @apply flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6;
+  }
+  
+  .form-button {
+    @apply w-full sm:flex-1;
+  }
+  
+  .header-nav {
+    @apply flex items-center gap-4;
+  }
+  
+  .card-spacing {
+    @apply space-y-4 sm:space-y-6;
+  }
+  
+  .mobile-cards {
+    @apply block sm:hidden px-4 space-y-4;
+  }
+  
+  .desktop-table {
+    @apply hidden sm:block;
+  }
+  
+  .search-container {
+    @apply mb-6;
+  }
+  
+  .pagination-container {
+    @apply flex flex-col sm:flex-row justify-center items-center gap-4 mt-8 px-4 sm:px-6;
+  }
+  
+  .pagination-button {
+    @apply w-full sm:w-auto;
+  }
+  
+  .mobile-card-item {
+    @apply p-4;
+  }
+  
+  .mobile-card-actions {
+    @apply flex gap-2;
+  }
+  
+  .mobile-card-button {
+    @apply text-sm flex-1;
+  }
+  
+  .table-cell {
+    @apply py-4 px-6;
+  }
+  
+  .table-actions {
+    @apply flex justify-end gap-2;
+  }
+  
+  .pagination-btn {
+    @apply px-4 py-2 bg-slate-700 text-white disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+}
