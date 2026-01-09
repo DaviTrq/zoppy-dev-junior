@@ -1,4 +1,4 @@
-# CRUD Clientes e Produtos: Desafio Zoppy
+# CRUD Clientes e Produtos: Davi Torquato.
 
 Aplicacao crud feita para o desafio da zoppy. Possui cliente e produto com relacionamento.
 
@@ -31,7 +31,7 @@ npm run start:dev
 - Backend vai estar em http://localhost:3000
 - Documentação do swagger em http://localhost:3000/api
 
-### 3. frontend
+### 3. Frontend
 ```bash
 cd frontend  
 npm install
