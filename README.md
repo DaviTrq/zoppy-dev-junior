@@ -44,7 +44,7 @@ npm start
 
 - 1. Provavel que seja por causa do docker
 
-    ## baixando docker desktop
+    ## Baixando docker desktop
 
     - Abra seu navegador
     - Navegue até: https://www.docker.com/products/docker-desktop/
