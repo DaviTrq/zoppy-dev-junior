@@ -25,15 +25,15 @@ let ProdutoService = class ProdutoService {
     async create(createProdutoDto) {
         return await this.produtoModel.create(createProdutoDto);
     }
-    async findAll(page = 1, limit = 10, search) {
+    async findAll(page = 1, limit = 10, search, minPrice, maxPrice, clienteId, sortBy = 'createdAt', sortOrder = 'DESC') {
         const offset = (page - 1) * limit;
-        const whereCondition = this.buildSearchCondition(search);
+        const whereCondition = this.buildSearchCondition(search, minPrice, maxPrice, clienteId);
         const { count, rows } = await this.produtoModel.findAndCountAll({
             where: whereCondition,
             include: [{ model: cliente_entity_1.Cliente, attributes: ['id', 'nome'] }],
             limit: Number(limit),
             offset: Number(offset),
-            order: [['createdAt', 'DESC']]
+            order: [[sortBy, sortOrder]]
         });
         return {
             data: rows,
@@ -59,17 +59,25 @@ let ProdutoService = class ProdutoService {
         const produto = await this.findOne(id);
         await produto.destroy();
     }
-    buildSearchCondition(search) {
-        if (!search || !search.trim()) {
-            return {};
-        }
-        const searchTerm = search.trim();
-        return {
-            [sequelize_2.Op.or]: [
+    buildSearchCondition(search, minPrice, maxPrice, clienteId) {
+        const conditions = {};
+        if (search && search.trim()) {
+            const searchTerm = search.trim();
+            conditions[sequelize_2.Op.or] = [
                 { nome: { [sequelize_2.Op.like]: `%${searchTerm}%` } },
                 { descricao: { [sequelize_2.Op.like]: `%${searchTerm}%` } }
-            ]
-        };
+            ];
+        }
+        if (minPrice !== undefined) {
+            conditions.preco = { ...conditions.preco, [sequelize_2.Op.gte]: minPrice };
+        }
+        if (maxPrice !== undefined) {
+            conditions.preco = { ...conditions.preco, [sequelize_2.Op.lte]: maxPrice };
+        }
+        if (clienteId !== undefined) {
+            conditions.clienteId = clienteId;
+        }
+        return conditions;
     }
 };
 exports.ProdutoService = ProdutoService;

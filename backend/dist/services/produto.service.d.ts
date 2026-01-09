@@ -5,7 +5,7 @@ export declare class ProdutoService {
     private produtoModel;
     constructor(produtoModel: typeof Produto);
     create(createProdutoDto: CreateProdutoDto): Promise<Produto>;
-    findAll(page?: number, limit?: number, search?: string): Promise<{
+    findAll(page?: number, limit?: number, search?: string, minPrice?: number, maxPrice?: number, clienteId?: number, sortBy?: string, sortOrder?: 'ASC' | 'DESC'): Promise<{
         data: Produto[];
         total: number;
         page: number;

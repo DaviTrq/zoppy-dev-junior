@@ -21,7 +21,7 @@ import { Produto, Cliente } from '../models/models';
             Back
           </button>
           <h1 class="page-title">
-            {{ isEditMode ? 'Edit Product' : 'New Product' }}
+            {{ isEditMode ? 'Editar Produto' : 'Novo Produto' }}
           </h1>
         </div>
       </div>
@@ -31,19 +31,19 @@ import { Produto, Cliente } from '../models/models';
           <form (ngSubmit)="handleSubmit()" class="card card-spacing">
             <div class="form-grid">
               <div>
-                <label class="form-label">Name</label>
+                <label class="form-label">Nome</label>
                 <input
                   type="text"
                   [(ngModel)]="formData.nome"
                   name="nome"
                   required
                   class="form-input"
-                  placeholder="Enter product name"
+                  placeholder="Digite o nome do produto"
                 >
               </div>
 
               <div>
-                <label class="form-label">Price</label>
+                <label class="form-label">Preço (R$)</label>
                 <input
                   type="number"
                   [(ngModel)]="formData.preco"
@@ -52,19 +52,19 @@ import { Produto, Cliente } from '../models/models';
                   min="0"
                   required
                   class="form-input"
-                  placeholder="0.00"
+                  placeholder="0,00"
                 >
               </div>
 
               <div>
-                <label class="form-label">Client</label>
+                <label class="form-label">Cliente</label>
                 <select
                   [(ngModel)]="formData.clienteId"
                   name="clienteId"
                   required
                   class="form-input"
                 >
-                  <option value="">Select a client</option>
+                  <option value="">Selecione um cliente</option>
                   <option *ngFor="let cliente of availableClients" [value]="cliente.id">
                     {{ cliente.nome }}
                   </option>
@@ -73,22 +73,22 @@ import { Produto, Cliente } from '../models/models';
             </div>
 
             <div>
-              <label class="form-label">Description</label>
+              <label class="form-label">Descrição</label>
               <textarea
                 [(ngModel)]="formData.descricao"
                 name="descricao"
                 rows="3"
                 class="form-input"
-                placeholder="Product description (optional)"
+                placeholder="Descrição do produto (opcional)"
               ></textarea>
             </div>
 
             <div class="form-actions">
               <button type="submit" [disabled]="isSaving" class="btn-primary form-button">
-                {{ isSaving ? (isEditMode ? 'Updating...' : 'Saving...') : (isEditMode ? 'Update' : 'Save') }}
+                {{ isSaving ? (isEditMode ? 'Atualizando...' : 'Salvando...') : (isEditMode ? 'Atualizar' : 'Salvar') }}
               </button>
               <button type="button" routerLink="/produtos" class="btn-secondary form-button">
-                Cancel
+                Cancelar
               </button>
             </div>
           </form>
@@ -165,9 +165,15 @@ export class ProdutoFormComponent implements OnInit {
 
     this.isSaving = true;
 
+    // Ensure clienteId is a positive integer
+    const productData = {
+      ...this.formData,
+      clienteId: parseInt(this.formData.clienteId.toString(), 10)
+    };
+
     const request = this.isEditMode
-      ? this.produtoService.updateProduto(this.formData.id!, this.formData)
-      : this.produtoService.createProduto(this.formData);
+      ? this.produtoService.updateProduto(this.formData.id!, productData)
+      : this.produtoService.createProduto(productData);
 
     request.subscribe({
       next: () => {

@@ -58,7 +58,10 @@ export class ProdutoService {
 
   private sanitizeProductData(produto: Produto) {
     const { id, cliente, ...data } = produto;
-    return data;
+    return {
+      ...data,
+      clienteId: produto.clienteId
+    };
   }
 
   private invalidateCache() {

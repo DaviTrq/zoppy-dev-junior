@@ -20,28 +20,45 @@ const cliente_entity_1 = require("../entities/cliente.entity");
 let ClienteService = class ClienteService {
     constructor(clienteModel) {
         this.clienteModel = clienteModel;
+        this.MAX_SEARCH_RESULTS = 1000;
     }
     async create(createClienteDto) {
         return await this.clienteModel.create(createClienteDto);
     }
-    async findAll(page = 1, limit = 10, search) {
+    async findAll(page = 1, limit = 10, search, sortBy = 'createdAt', sortOrder = 'DESC') {
         const offset = (page - 1) * limit;
         const whereCondition = this.buildSearchCondition(search);
+        if (!search && page * limit > this.MAX_SEARCH_RESULTS) {
+            throw new common_1.BadRequestException(`Cannot retrieve more than ${this.MAX_SEARCH_RESULTS} records. Use search filters to narrow results.`);
+        }
         const { count, rows } = await this.clienteModel.findAndCountAll({
             where: whereCondition,
             limit: Number(limit),
             offset: Number(offset),
-            order: [['createdAt', 'DESC']]
+            order: [[sortBy, sortOrder]],
+            attributes: { exclude: ['cpf'] },
+            logging: false,
         });
+        const maxPages = Math.ceil(this.MAX_SEARCH_RESULTS / limit);
+        const totalPages = Math.min(Math.ceil(count / Number(limit)), maxPages);
         return {
             data: rows,
-            total: count,
+            total: Math.min(count, this.MAX_SEARCH_RESULTS),
             page: Number(page),
-            totalPages: Math.ceil(count / Number(limit)),
+            totalPages,
+            limit: Number(limit),
+            hasMore: count > this.MAX_SEARCH_RESULTS,
+            filters: {
+                search: search || null,
+                sortBy,
+                sortOrder
+            }
         };
     }
     async findOne(id) {
-        const cliente = await this.clienteModel.findByPk(id);
+        const cliente = await this.clienteModel.findByPk(id, {
+            attributes: { exclude: [] },
+        });
         if (!cliente) {
             throw new common_1.NotFoundException(`Client with ID ${id} not found`);
         }
@@ -60,12 +77,46 @@ let ClienteService = class ClienteService {
             return {};
         }
         const searchTerm = search.trim();
+        const sanitizedTerm = searchTerm.replace(/[%_\\]/g, '\\$&');
         return {
             [sequelize_2.Op.or]: [
-                { nome: { [sequelize_2.Op.like]: `%${searchTerm}%` } },
-                { email: { [sequelize_2.Op.like]: `%${searchTerm}%` } },
-                { cpf: { [sequelize_2.Op.like]: `%${searchTerm}%` } }
+                { nome: { [sequelize_2.Op.like]: `%${sanitizedTerm}%` } },
+                { email: { [sequelize_2.Op.like]: `%${sanitizedTerm}%` } },
             ]
+        };
+    }
+    async findWithAdvancedFilters(filters) {
+        const { page = 1, limit = 10, nome, email, createdAfter, createdBefore } = filters;
+        const offset = (page - 1) * limit;
+        const whereConditions = {};
+        if (nome) {
+            whereConditions.nome = { [sequelize_2.Op.like]: `%${nome}%` };
+        }
+        if (email) {
+            whereConditions.email = { [sequelize_2.Op.like]: `%${email}%` };
+        }
+        if (createdAfter || createdBefore) {
+            whereConditions.createdAt = {};
+            if (createdAfter) {
+                whereConditions.createdAt[sequelize_2.Op.gte] = createdAfter;
+            }
+            if (createdBefore) {
+                whereConditions.createdAt[sequelize_2.Op.lte] = createdBefore;
+            }
+        }
+        const { count, rows } = await this.clienteModel.findAndCountAll({
+            where: whereConditions,
+            limit: Number(limit),
+            offset: Number(offset),
+            order: [['createdAt', 'DESC']],
+            attributes: { exclude: ['cpf'] },
+        });
+        return {
+            data: rows,
+            total: count,
+            page: Number(page),
+            totalPages: Math.ceil(count / Number(limit)),
+            appliedFilters: filters
         };
     }
 };

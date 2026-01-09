@@ -20,7 +20,7 @@ import { Cliente } from '../models/models';
             Back
           </button>
           <h1 class="page-title">
-            {{ isEditMode ? 'Edit Client' : 'New Client' }}
+            {{ isEditMode ? 'Editar Cliente' : 'Novo Cliente' }}
           </h1>
         </div>
       </div>
@@ -30,7 +30,7 @@ import { Cliente } from '../models/models';
           <form (ngSubmit)="handleSubmit()" class="card card-spacing">
             <div class="form-grid">
               <div>
-                <label class="form-label">Name</label>
+                <label class="form-label">Nome</label>
                 <input
                   type="text"
                   [(ngModel)]="formData.nome"
@@ -38,12 +38,12 @@ import { Cliente } from '../models/models';
                   required
                   autocomplete="off"
                   class="form-input"
-                  placeholder="Enter full name"
+                  placeholder="Digite o nome completo"
                 >
               </div>
 
               <div>
-                <label class="form-label">Email</label>
+                <label class="form-label">E-mail</label>
                 <input
                   type="email"
                   [(ngModel)]="formData.email"
@@ -51,12 +51,12 @@ import { Cliente } from '../models/models';
                   required
                   autocomplete="off"
                   class="form-input"
-                  placeholder="email@example.com"
+                  placeholder="email@exemplo.com"
                 >
               </div>
 
               <div>
-                <label class="form-label">Phone</label>
+                <label class="form-label">Telefone</label>
                 <input
                   type="tel"
                   [(ngModel)]="formData.telefone"
@@ -86,10 +86,10 @@ import { Cliente } from '../models/models';
 
             <div class="form-actions">
               <button type="submit" [disabled]="isSaving" class="btn-primary form-button">
-                {{ isSaving ? (isEditMode ? 'Updating...' : 'Saving...') : (isEditMode ? 'Update' : 'Save') }}
+                {{ isSaving ? (isEditMode ? 'Atualizando...' : 'Salvando...') : (isEditMode ? 'Atualizar' : 'Salvar') }}
               </button>
               <button type="button" routerLink="/clientes" class="btn-secondary form-button">
-                Cancel
+                Cancelar
               </button>
             </div>
           </form>

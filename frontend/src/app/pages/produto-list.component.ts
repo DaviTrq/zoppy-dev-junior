@@ -22,7 +22,7 @@ import { Produto, PaginatedResponse } from '../models/models';
             </div>
           </div>
           <button (click)="onCreate()" class="btn-primary w-full sm:w-auto">
-            New Product
+            Novo Produto
           </button>
         </div>
       </div>
@@ -30,7 +30,7 @@ import { Produto, PaginatedResponse } from '../models/models';
       <div class="search-container">
         <input 
           type="text" 
-          placeholder="Search products..."
+          placeholder="Buscar produtos..."
           [(ngModel)]="searchTerm"
           (input)="onSearch()"
           class="form-input"
@@ -50,10 +50,10 @@ import { Produto, PaginatedResponse } from '../models/models';
           <div class="text-secondary text-sm mb-3">Cliente: {{ produto.cliente?.nome || 'N/A' }}</div>
           <div class="mobile-card-actions">
             <button (click)="onEdit(produto.id!)" class="btn-secondary mobile-card-button">
-              Edit
+              Editar
             </button>
             <button (click)="onDelete(produto.id!)" class="btn-danger mobile-card-button">
-              Delete
+              Deletar
             </button>
           </div>
         </div>
@@ -65,11 +65,11 @@ import { Produto, PaginatedResponse } from '../models/models';
           <table class="w-full">
             <thead>
               <tr class="table-header">
-                <th class="text-left table-cell">Name</th>
-                <th class="text-left table-cell">Description</th>
-                <th class="text-left table-cell">Price</th>
-                <th class="text-left table-cell">Client</th>
-                <th class="text-right table-cell">Actions</th>
+                <th class="text-left table-cell">Nome</th>
+                <th class="text-left table-cell">Descrição</th>
+                <th class="text-left table-cell">Preço</th>
+                <th class="text-left table-cell">Cliente</th>
+                <th class="text-right table-cell">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -89,10 +89,10 @@ import { Produto, PaginatedResponse } from '../models/models';
                 <td class="table-cell text-right">
                   <div class="table-actions">
                     <button (click)="onEdit(produto.id!)" class="btn-secondary table-button">
-                      Edit
+                      Editar
                     </button>
                     <button (click)="onDelete(produto.id!)" class="btn-danger table-button">
-                      Delete
+                      Deletar
                     </button>
                   </div>
                 </td>
@@ -103,16 +103,16 @@ import { Produto, PaginatedResponse } from '../models/models';
       </div>
       
       <div *ngIf="!isLoading && produtos.length === 0" class="empty-state">
-        No products found
+        Nenhum produto encontrado
       </div>
       
       <div *ngIf="totalPages > 1" class="pagination-container">
         <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1" class="pagination-btn pagination-button">
-          Previous
+          Anterior
         </button>
-        <span class="text-secondary text-center">Page {{ currentPage }} of {{ totalPages }}</span>
+        <span class="text-secondary text-center">Página {{ currentPage }} de {{ totalPages }}</span>
         <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages" class="pagination-btn pagination-button">
-          Next
+          Próxima
         </button>
       </div>
     </div>
@@ -178,7 +178,7 @@ export class ProdutoListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(id: number) {
-    if (confirm('Are you sure you want to delete this product?')) {
+    if (confirm('Tem certeza que deseja deletar este produto?')) {
       this.produtoService.deleteProduto(id)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.loadData());

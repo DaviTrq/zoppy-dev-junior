@@ -1,88 +1,219 @@
-# CRUD Clientes e Produtos: Davi Torquato.
+# CRUD Clientes e Produtos - Zoppy
 
-Aplicacao crud feita para o desafio da zoppy. Possui cliente e produto com relacionamento.
+> **Aplicação Full Stack desenvolvida para o desafio técnico da Zoppy**  
+> Sistema completo de gerenciamento de clientes e produtos com relacionamentos
 
-## O que a aplicação possui
+## Sobre o Projeto
 
-- Backend em **NestJS 10 + MySQL**
-- Frontend em **Angular 19**
-- **Docker** para todo o ambiente
-- CRUD completo (clientes e produtos)
-- **Busca** e **paginação**
-- **Testes unitários**
+Este projeto implementa um **CRUD completo** para gerenciamento de clientes e produtos, desenvolvido com as mais modernas stacks.
 
-## Como executar o projeto
+### 📄 Funcionalidades Principais
 
-### 1. Clone o repositório
+- ✅ **CRUD Completo** - Create, Read, Update, Delete
+- 🔍 **Busca Avançada** - Filtros inteligentes com debounce
+- 📄 **Paginação** - Navegação eficiente entre registros
+- 🔗 **Relacionamentos** - Produtos vinculados a clientes
+- 📱 **Design Responsivo** - Mobile-first com Tailwind CSS
+- 🛡️ **Segurança** - Rate limiting e validações robustas
+- 🧪 **Testes** - Cobertura de +50% com Jest
+- 📚 **Documentação** - Swagger/OpenAPI integrado
+
+## Stacks
+
+### Backend
+- **NestJS 10** - Framework Node.js robusto
+- **MySQL 8** - Banco de dados relacional
+- **Sequelize** - ORM para TypeScript
+- **Docker** - Containerização
+- **Jest** - Testes unitários
+- **Swagger** - Documentação da API
+
+### Frontend
+- **Angular 19** - Framework SPA moderno
+- **RxJS** - Programação reativa
+- **TailwindCSS** - Estilização utilitária
+- **TypeScript** - Tipagem estática
+- **Responsive Design** - Mobile-first
+
+## 📄 Como Executar
+
+### Pré-requisitos
+- **Node.js** 18+ 
+- **Docker Desktop**
+- **Git**
+
+### 1️⃣ Clone o Repositório
 ```bash
-git clone [url-do-meu-repo]
-cd zoppy-desenvolvedor-jr
+git clone https://github.com/DaviTrq/zoppy-desenvolvedor-junior.git
+cd zoppy-desenvolvedor-junior
 ```
 
-### 2. Backend
+### 2️⃣ Inicie o Banco de Dados
+```bash
+# Suba o MySQL com Docker
+docker-compose up -d
+
+# Aguarde ~30s para inicialização completa
+docker-compose logs mysql
+```
+
+### 3️⃣ Configure o Backend
 ```bash
 cd backend
 npm install
-docker-compose up -d
-# espera o mysql subir
 npm run start:dev
 ```
 
-- Backend vai estar em http://localhost:3000
-- Documentação do swagger em http://localhost:3000/api
+**✅ Backend disponível em:** http://localhost:3000  
+**📚 Documentação Swagger:** http://localhost:3000/api
 
-### 3. Frontend
+### 4️⃣ Configure o Frontend
 ```bash
-cd frontend  
+cd ../frontend
 npm install
 npm start
 ```
 
-- Frontend vai estar em http://localhost:4200
+**✅ Frontend disponível em:** http://localhost:4200
 
-## Caso venha a dar erro
-
-- 1. Provavel que seja por causa do docker
-
-    ## Baixando docker desktop
-
-    - Abra seu navegador
-    - Navegue até: https://www.docker.com/products/docker-desktop/
-    - Clique "Download for Windows"
-    - Aguarde o download do arquivo `Docker Desktop Installer.exe`
-    - Execute o arquivo baixado e siga a instalação. Após completar repita os passos do readme inteiro novamente
-
-
-- 2. Se o Mysql nao subir: `docker-compose down` e `docker-compose up -d` de novo
-- 3. Se der erro de porta: parar os processos nas portas 3000 e 4200, Ctrl+C no terminal onde está rodando.
-
-## Para testar
+## 🧪 Executar Testes
 
 ```bash
+# Testes unitários
 cd backend
 npm test
+
+# Cobertura de código
 npm run test:cov
 ```
 
-## Stacks
+## 📁 Estrutura do Projeto
 
-- nestjs 10
-- angular 19
-- mysql 8
-- docker
-- sequelize
-- tailwindcss
-- jest
+```
+zoppy-desenvolvedor-junior/
+├── 🗄️ backend/              # API NestJS
+│   ├── src/
+│   │   ├── controllers/     # Endpoints REST
+│   │   ├── services/        # Lógica de negócio
+│   │   ├── entities/        # Models do banco
+│   │   ├── dto/            # Validação de dados
+│   │   └── middleware/     # Rate limiting
+│   └── test/               # Testes unitários
+├── 🎨 frontend/             # SPA Angular
+│   └── src/app/
+│       ├── pages/          # Componentes de tela
+│       ├── services/       # Comunicação com API
+│       └── models/         # Interfaces TypeScript
+├── 🐳 docker-compose.yml    # Configuração MySQL
+└── 📖 README.md            # Este arquivo
+```
 
-## Aprendizado e Evolução Técnica
+## 🎨 Design System
 
-Este projeto foi muito importante para a minha evolução técnica. Com ele, consegui aprofundar bastante meus conhecimentos em NestJS, trabalhando com arquitetura em camadas, relacionamentos entre entidades, testes unitários e boas práticas na construção de APIs REST. No Angular, evoluí na criação de CRUDs completos, integração com o backend, implementação de busca, paginação e melhor organização dos componentes.
+### Cores Zoppy (Com base no site)
+- **Primário:** `#7b3dff` (Roxo Zoppy)
+- **Texto:** `#002E73` (Azul Escuro)
+- **Fonte:** `Inter, sans-serif`
 
-Também passei a ter mais segurança no uso de Docker para padronizar o ambiente de desenvolvimento, além de reforçar conceitos de MySQL, Sequelize, Jest e TailwindCSS. No geral, o desafio me ajudou a desenvolver uma visão mais madura de aplicações full stack, mais organizadas, testáveis e próximas do que é usado em projetos reais.
+### Componentes
+- **Cards Responsivos** - Mobile e Desktop
+- **Tabelas Inteligentes** - Ordenação e filtros
+- **Formulários Validados** - Feedback em tempo real
+- **Paginação Avançada** - Navegação otimizada
 
-Espero que gostem!!!
+## 🛡️ Segurança e Performance
 
-Atenciosamente, 
+### Limitações Implementadas
+- **Rate Limiting:** 1000 req/15min (geral), 100 req/15min (busca)
+- **Paginação:** Máximo 100 itens por página
+- **Validação:** Sanitização contra SQL injection
+- **Filtros:** Busca mínima de 2 caracteres
 
-Davi Torquato.
+### Otimizações
+- **Debounce** na busca (300ms)
+- **Lazy Loading** de dados
+- **Cache** com BehaviorSubject
+- **Memory Leak Prevention** (takeUntil)
 
+## 📊 Cobertura de Testes
+
+- **Branches:** 50%+
+- **Functions:** 50%+
+- **Lines:** 50%+
+- **Statements:** 50%+
+
+## 🔧 Solução de Problemas
+
+### MySQL não inicia
+```bash
+docker-compose down
+docker-compose up -d
+```
+
+### Erro de porta ocupada
+```bash
+# Parar processos nas portas 3000 e 4200
+Ctrl+C nos terminais
+```
+
+### Dependências desatualizadas
+```bash
+# Backend
+cd backend && npm install
+
+# Frontend  
+cd frontend && npm install
+```
+
+## 🏆 Desafios Técnicos Concluídos
+
+### ✅ Requisitos Obrigatórios
+- [x] Backend NestJS 10
+- [x] Frontend Angular 19
+- [x] Banco MySQL persistente
+- [x] Pelo menos 2 telas (4 implementadas)
+
+### ✅ Desafios Extras - Frontend
+- [x] RxJS Observables para estado
+- [x] TailwindCSS para estilização
+- [x] Abordagem Mobile First
+- [x] Filtros para listagem
+
+### ✅ Desafios Extras - Backend
+- [x] Testes Jest com +50% cobertura
+- [x] Docker para containerização
+- [x] Banco de dados efetivo
+- [x] Limitação de acesso a dados
+
+## 👨💻 Desenvolvedor
+
+**Davi Torquato**  
+- Email: [davitrqto@gmail.com]
+- GitHub: [DaviTrq](https://github.com/DaviTrq)
+- LinkedIn: [Davi Torquato](https://www.linkedin.com/in/davi-torquato/)
+
+---
+
+### 📈 Aprendizados e Evolução
+
+Este projeto foi fundamental para minha evolução técnica, permitindo aprofundar conhecimentos em:
+
+- **Arquitetura em camadas** com NestJS
+- **Relacionamentos** entre entidades
+- **Testes unitários** e boas práticas
+- **APIs REST** robustas e documentadas
+- **SPAs modernas** com Angular 19
+- **Programação reativa** com RxJS
+- **Design responsivo** e UX
+- **Containerização** com Docker
+- **Segurança** e performance
+
+O desafio me proporcionou uma visão mais madura de aplicações full stack, organizadas, testáveis e próximas do que é usado em projetos reais.
+
+---
+
+**Espero que gostem!!!**
+
+
+Atenciosamente,  
+Davi Torquato

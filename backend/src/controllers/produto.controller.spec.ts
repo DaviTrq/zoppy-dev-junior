@@ -54,7 +54,7 @@ describe('ProdutoController', () => {
 
       mockProdutoService.create.mockResolvedValue(mockProduto);
 
-      const result = await controller.create(createProdutoDto);
+      const result = await controller.createProduct(createProdutoDto);
 
       expect(service.create).toHaveBeenCalledWith(createProdutoDto);
       expect(result).toEqual(mockProduto);
@@ -72,7 +72,7 @@ describe('ProdutoController', () => {
 
       mockProdutoService.findAll.mockResolvedValue(mockResponse);
 
-      const result = await controller.findAll(1, 10, 'Produto');
+      const result = await controller.getProducts(1, 10, 'Produto');
 
       expect(service.findAll).toHaveBeenCalledWith(1, 10, 'Produto');
       expect(result).toEqual(mockResponse);
@@ -88,7 +88,7 @@ describe('ProdutoController', () => {
 
       mockProdutoService.findAll.mockResolvedValue(mockResponse);
 
-      const result = await controller.findAll();
+      const result = await controller.getProducts();
 
       expect(service.findAll).toHaveBeenCalledWith(undefined, undefined, undefined);
       expect(result).toEqual(mockResponse);
@@ -99,7 +99,7 @@ describe('ProdutoController', () => {
     it('should return a produto by id', async () => {
       mockProdutoService.findOne.mockResolvedValue(mockProduto);
 
-      const result = await controller.findOne(1);
+      const result = await controller.getProductById(1);
 
       expect(service.findOne).toHaveBeenCalledWith(1);
       expect(result).toEqual(mockProduto);
@@ -115,7 +115,7 @@ describe('ProdutoController', () => {
       const updatedProduto = { ...mockProduto, ...updateProdutoDto };
       mockProdutoService.update.mockResolvedValue(updatedProduto);
 
-      const result = await controller.update(1, updateProdutoDto);
+      const result = await controller.updateProduct(1, updateProdutoDto);
 
       expect(service.update).toHaveBeenCalledWith(1, updateProdutoDto);
       expect(result).toEqual(updatedProduto);
@@ -126,7 +126,7 @@ describe('ProdutoController', () => {
     it('should remove a produto', async () => {
       mockProdutoService.remove.mockResolvedValue(undefined);
 
-      await controller.remove(1);
+      await controller.deleteProduct(1);
 
       expect(service.remove).toHaveBeenCalledWith(1);
     });

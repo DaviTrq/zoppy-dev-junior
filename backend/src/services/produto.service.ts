@@ -17,17 +17,26 @@ export class ProdutoService {
     return await this.produtoModel.create(createProdutoDto);
   }
 
-  async findAll(page: number = 1, limit: number = 10, search?: string) {
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
+    search?: string,
+    minPrice?: number,
+    maxPrice?: number,
+    clienteId?: number,
+    sortBy: string = 'createdAt',
+    sortOrder: 'ASC' | 'DESC' = 'DESC'
+  ) {
     const offset = (page - 1) * limit;
     
-    const whereCondition = this.buildSearchCondition(search);
+    const whereCondition = this.buildSearchCondition(search, minPrice, maxPrice, clienteId);
 
     const { count, rows } = await this.produtoModel.findAndCountAll({
       where: whereCondition,
       include: [{ model: Cliente, attributes: ['id', 'nome'] }],
       limit: Number(limit),
       offset: Number(offset),
-      order: [['createdAt', 'DESC']]
+      order: [[sortBy, sortOrder]]
     });
 
     return {
@@ -58,17 +67,29 @@ export class ProdutoService {
     await produto.destroy();
   }
 
-  private buildSearchCondition(search?: string) {
-    if (!search || !search.trim()) {
-      return {};
-    }
+  private buildSearchCondition(search?: string, minPrice?: number, maxPrice?: number, clienteId?: number) {
+    const conditions: any = {};
     
-    const searchTerm = search.trim();
-    return {
-      [Op.or]: [
+    if (search && search.trim()) {
+      const searchTerm = search.trim();
+      conditions[Op.or] = [
         { nome: { [Op.like]: `%${searchTerm}%` } },
         { descricao: { [Op.like]: `%${searchTerm}%` } }
-      ]
-    };
+      ];
+    }
+    
+    if (minPrice !== undefined) {
+      conditions.preco = { ...conditions.preco, [Op.gte]: minPrice };
+    }
+    
+    if (maxPrice !== undefined) {
+      conditions.preco = { ...conditions.preco, [Op.lte]: maxPrice };
+    }
+    
+    if (clienteId !== undefined) {
+      conditions.clienteId = clienteId;
+    }
+    
+    return conditions;
   }
 }

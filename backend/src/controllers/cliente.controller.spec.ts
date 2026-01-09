@@ -54,7 +54,7 @@ describe('ClienteController', () => {
 
       mockClienteService.create.mockResolvedValue(mockCliente);
 
-      const result = await controller.create(createClienteDto);
+      const result = await controller.createClient(createClienteDto);
 
       expect(service.create).toHaveBeenCalledWith(createClienteDto);
       expect(result).toEqual(mockCliente);
@@ -72,7 +72,7 @@ describe('ClienteController', () => {
 
       mockClienteService.findAll.mockResolvedValue(mockResponse);
 
-      const result = await controller.findAll(1, 10, 'João');
+      const result = await controller.getClients(1, 10, 'João');
 
       expect(service.findAll).toHaveBeenCalledWith(1, 10, 'João');
       expect(result).toEqual(mockResponse);
@@ -88,7 +88,7 @@ describe('ClienteController', () => {
 
       mockClienteService.findAll.mockResolvedValue(mockResponse);
 
-      const result = await controller.findAll();
+      const result = await controller.getClients();
 
       expect(service.findAll).toHaveBeenCalledWith(undefined, undefined, undefined);
       expect(result).toEqual(mockResponse);
@@ -99,7 +99,7 @@ describe('ClienteController', () => {
     it('should return a cliente by id', async () => {
       mockClienteService.findOne.mockResolvedValue(mockCliente);
 
-      const result = await controller.findOne(1);
+      const result = await controller.getClientById(1);
 
       expect(service.findOne).toHaveBeenCalledWith(1);
       expect(result).toEqual(mockCliente);
@@ -115,7 +115,7 @@ describe('ClienteController', () => {
       const updatedCliente = { ...mockCliente, ...updateClienteDto };
       mockClienteService.update.mockResolvedValue(updatedCliente);
 
-      const result = await controller.update(1, updateClienteDto);
+      const result = await controller.updateClient(1, updateClienteDto);
 
       expect(service.update).toHaveBeenCalledWith(1, updateClienteDto);
       expect(result).toEqual(updatedCliente);
@@ -126,7 +126,7 @@ describe('ClienteController', () => {
     it('should remove a cliente', async () => {
       mockClienteService.remove.mockResolvedValue(undefined);
 
-      await controller.remove(1);
+      await controller.deleteClient(1);
 
       expect(service.remove).toHaveBeenCalledWith(1);
     });

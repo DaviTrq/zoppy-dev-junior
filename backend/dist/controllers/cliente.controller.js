@@ -21,12 +21,19 @@ const update_cliente_dto_1 = require("../dto/update-cliente.dto");
 let ClienteController = class ClienteController {
     constructor(clienteService) {
         this.clienteService = clienteService;
+        this.MAX_LIMIT = 100;
+        this.DEFAULT_LIMIT = 10;
+        this.DEFAULT_PAGE = 1;
     }
     async createClient(createClienteDto) {
         return await this.clienteService.create(createClienteDto);
     }
-    async getClients(page, limit, search) {
-        return await this.clienteService.findAll(page, limit, search);
+    async getClients(page, limit, search, sortBy, sortOrder) {
+        const validatedPage = this.validatePage(page);
+        const validatedLimit = this.validateLimit(limit);
+        const validatedSearch = this.validateSearch(search);
+        const validatedSort = this.validateSort(sortBy, sortOrder);
+        return await this.clienteService.findAll(validatedPage, validatedLimit, validatedSearch, validatedSort.sortBy, validatedSort.sortOrder);
     }
     async getClientById(id) {
         return await this.clienteService.findOne(id);
@@ -36,6 +43,43 @@ let ClienteController = class ClienteController {
     }
     async deleteClient(id) {
         return await this.clienteService.remove(id);
+    }
+    validatePage(page) {
+        if (!page || page < 1) {
+            return this.DEFAULT_PAGE;
+        }
+        if (page > 10000) {
+            throw new common_1.BadRequestException('Page number too high (max: 10000)');
+        }
+        return page;
+    }
+    validateLimit(limit) {
+        if (!limit || limit < 1) {
+            return this.DEFAULT_LIMIT;
+        }
+        if (limit > this.MAX_LIMIT) {
+            throw new common_1.BadRequestException(`Limit too high (max: ${this.MAX_LIMIT})`);
+        }
+        return limit;
+    }
+    validateSearch(search) {
+        if (!search)
+            return undefined;
+        const trimmed = search.trim();
+        if (trimmed.length > 100) {
+            throw new common_1.BadRequestException('Search term too long (max: 100 characters)');
+        }
+        if (trimmed.length < 2) {
+            throw new common_1.BadRequestException('Search term too short (min: 2 characters)');
+        }
+        return trimmed;
+    }
+    validateSort(sortBy, sortOrder) {
+        const allowedSortFields = ['nome', 'email', 'createdAt', 'updatedAt'];
+        const allowedSortOrders = ['ASC', 'DESC'];
+        const validSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+        const validSortOrder = allowedSortOrders.includes(sortOrder) ? sortOrder : 'DESC';
+        return { sortBy: validSortBy, sortOrder: validSortOrder };
     }
 };
 exports.ClienteController = ClienteController;
@@ -52,14 +96,18 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'List clients with pagination and filters' }),
-    (0, swagger_1.ApiQuery)({ name: 'page', required: false, description: 'Page number' }),
-    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, description: 'Items per page' }),
+    (0, swagger_1.ApiQuery)({ name: 'page', required: false, description: 'Page number (min: 1)' }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, description: `Items per page (max: ${100})` }),
     (0, swagger_1.ApiQuery)({ name: 'search', required: false, description: 'Search by name, email or CPF' }),
+    (0, swagger_1.ApiQuery)({ name: 'sortBy', required: false, description: 'Sort field: nome, email, createdAt' }),
+    (0, swagger_1.ApiQuery)({ name: 'sortOrder', required: false, description: 'Sort order: ASC, DESC' }),
     __param(0, (0, common_1.Query)('page', new common_1.ParseIntPipe({ optional: true }))),
     __param(1, (0, common_1.Query)('limit', new common_1.ParseIntPipe({ optional: true }))),
     __param(2, (0, common_1.Query)('search')),
+    __param(3, (0, common_1.Query)('sortBy')),
+    __param(4, (0, common_1.Query)('sortOrder')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number, String]),
+    __metadata("design:paramtypes", [Number, Number, String, String, String]),
     __metadata("design:returntype", Promise)
 ], ClienteController.prototype, "getClients", null);
 __decorate([
