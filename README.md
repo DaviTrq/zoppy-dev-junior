@@ -74,7 +74,7 @@ npm install
 npm start
 ```
 
-** Frontend disponível em:** http://localhost:4200
+**Frontend disponível em:** http://localhost:4200
 
 ##  Executar Testes
 
