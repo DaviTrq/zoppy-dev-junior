@@ -2,14 +2,14 @@
 
 Aplicacao crud feita para o desafio da zoppy. Possui cliente e produto com relacionamento.
 
-## O que se encontra na aplicação
+## O que a aplicação possui
 
-- Backend NestJs 10 + Mysql
-- Frontend Angular 19  
-- Docker para tudo
-- Crud completo
-- Busca e paginação
-- Testes unitários
+- Backend em **NestJS 10 + MySQL**
+- Frontend em **Angular 19**
+- **Docker** para todo o ambiente
+- CRUD completo (clientes e produtos)
+- **Busca** e **paginação**
+- **Testes unitários**
 
 ## Como executar o projeto
 
