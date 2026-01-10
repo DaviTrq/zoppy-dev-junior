@@ -39,7 +39,7 @@ Este projeto implementa um **CRUD completo** para gerenciamento de clientes e pr
 
 ### Pré-requisitos
 - **Node.js** 18+ 
-- **Docker Desktop**
+- **Docker Desktop (Abra antes de rodar todos os passos)**
 - **Git**
 
 ### 1️⃣ Clone o Repositório
