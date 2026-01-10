@@ -90,7 +90,7 @@ describe('ProdutoController', () => {
 
       const result = await controller.getProducts();
 
-      expect(service.findAll).toHaveBeenCalledWith(undefined, undefined, undefined);
+      expect(service.findAll).toHaveBeenCalledWith(1, 10, undefined);
       expect(result).toEqual(mockResponse);
     });
   });
@@ -129,6 +129,39 @@ describe('ProdutoController', () => {
       await controller.deleteProduct(1);
 
       expect(service.remove).toHaveBeenCalledWith(1);
+    });
+  });
+
+  describe('validation methods', () => {
+    it('should handle string parameters correctly', async () => {
+      const mockResponse = {
+        data: [mockProduto],
+        total: 1,
+        page: 1,
+        totalPages: 1,
+      };
+
+      mockProdutoService.findAll.mockResolvedValue(mockResponse);
+
+      // Test with string parameters
+      await controller.getProducts('2', '5', 'test');
+      
+      expect(service.findAll).toHaveBeenCalledWith(2, 5, 'test');
+    });
+
+    it('should handle undefined parameters', async () => {
+      const mockResponse = {
+        data: [mockProduto],
+        total: 1,
+        page: 1,
+        totalPages: 1,
+      };
+
+      mockProdutoService.findAll.mockResolvedValue(mockResponse);
+
+      await controller.getProducts(undefined, undefined, undefined);
+      
+      expect(service.findAll).toHaveBeenCalledWith(1, 10, undefined);
     });
   });
 });

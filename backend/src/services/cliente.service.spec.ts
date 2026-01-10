@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/sequelize';
 import { NotFoundException } from '@nestjs/common';
+import { Op } from 'sequelize';
 import { ClienteService } from './cliente.service';
 import { Cliente } from '../entities/cliente.entity';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
@@ -78,6 +79,8 @@ describe('ClienteService', () => {
         limit: 10,
         offset: 0,
         order: [['createdAt', 'DESC']],
+        attributes: { exclude: ['cpf'] },
+        logging: false,
       });
 
       expect(result).toEqual({
@@ -85,6 +88,13 @@ describe('ClienteService', () => {
         total: 1,
         page: 1,
         totalPages: 1,
+        limit: 10,
+        hasMore: false,
+        filters: {
+          search: null,
+          sortBy: 'createdAt',
+          sortOrder: 'DESC'
+        }
       });
     });
 
@@ -100,15 +110,16 @@ describe('ClienteService', () => {
 
       expect(mockClienteModel.findAndCountAll).toHaveBeenCalledWith({
         where: {
-          $or: [
-            { nome: { $like: '%João%' } },
-            { email: { $like: '%João%' } },
-            { cpf: { $like: '%João%' } },
+          [Op.or]: [
+            { nome: { [Op.like]: '%João%' } },
+            { email: { [Op.like]: '%João%' } },
           ],
         },
         limit: 10,
         offset: 0,
         order: [['createdAt', 'DESC']],
+        attributes: { exclude: ['cpf'] },
+        logging: false,
       });
 
       expect(result.data).toEqual([mockCliente]);
@@ -121,7 +132,9 @@ describe('ClienteService', () => {
 
       const result = await service.findOne(1);
 
-      expect(mockClienteModel.findByPk).toHaveBeenCalledWith(1);
+      expect(mockClienteModel.findByPk).toHaveBeenCalledWith(1, {
+        attributes: { exclude: [] },
+      });
       expect(result).toEqual(mockCliente);
     });
 
@@ -129,7 +142,7 @@ describe('ClienteService', () => {
       mockClienteModel.findByPk.mockResolvedValue(null);
 
       await expect(service.findOne(999)).rejects.toThrow(NotFoundException);
-      await expect(service.findOne(999)).rejects.toThrow('Cliente 999 não encontrado');
+      await expect(service.findOne(999)).rejects.toThrow('Client with ID 999 not found');
     });
   });
 
@@ -144,7 +157,9 @@ describe('ClienteService', () => {
 
       const result = await service.update(1, updateClienteDto);
 
-      expect(mockClienteModel.findByPk).toHaveBeenCalledWith(1);
+      expect(mockClienteModel.findByPk).toHaveBeenCalledWith(1, {
+        attributes: { exclude: [] },
+      });
       expect(mockCliente.update).toHaveBeenCalledWith(updateClienteDto);
       expect(result.nome).toBe('João Silva Atualizado');
     });
@@ -163,7 +178,9 @@ describe('ClienteService', () => {
 
       await service.remove(1);
 
-      expect(mockClienteModel.findByPk).toHaveBeenCalledWith(1);
+      expect(mockClienteModel.findByPk).toHaveBeenCalledWith(1, {
+        attributes: { exclude: [] },
+      });
       expect(mockCliente.destroy).toHaveBeenCalled();
     });
 
@@ -171,6 +188,68 @@ describe('ClienteService', () => {
       mockClienteModel.findByPk.mockResolvedValue(null);
 
       await expect(service.remove(999)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('buildSearchCondition', () => {
+    it('should return empty object when search is empty', async () => {
+      mockClienteModel.findAndCountAll.mockResolvedValue({ count: 0, rows: [] });
+      
+      await service.findAll(1, 10, '');
+      
+      expect(mockClienteModel.findAndCountAll).toHaveBeenCalledWith(
+        expect.objectContaining({ where: {} })
+      );
+    });
+
+    it('should sanitize search term', async () => {
+      mockClienteModel.findAndCountAll.mockResolvedValue({ count: 0, rows: [] });
+      
+      await service.findAll(1, 10, 'test%_\\');
+      
+      expect(mockClienteModel.findAndCountAll).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            [Op.or]: [
+              { nome: { [Op.like]: '%test\\%\\_\\\\%' } },
+              { email: { [Op.like]: '%test\\%\\_\\\\%' } },
+            ]
+          }
+        })
+      );
+    });
+  });
+
+  describe('findWithAdvancedFilters', () => {
+    it('should filter by nome', async () => {
+      mockClienteModel.findAndCountAll.mockResolvedValue({ count: 1, rows: [mockCliente] });
+      
+      await service.findWithAdvancedFilters({ nome: 'João' });
+      
+      expect(mockClienteModel.findAndCountAll).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { nome: { [Op.like]: '%João%' } }
+        })
+      );
+    });
+
+    it('should filter by date range', async () => {
+      const createdAfter = new Date('2023-01-01');
+      const createdBefore = new Date('2023-12-31');
+      mockClienteModel.findAndCountAll.mockResolvedValue({ count: 1, rows: [mockCliente] });
+      
+      await service.findWithAdvancedFilters({ createdAfter, createdBefore });
+      
+      expect(mockClienteModel.findAndCountAll).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            createdAt: {
+              [Op.gte]: createdAfter,
+              [Op.lte]: createdBefore
+            }
+          }
+        })
+      );
     });
   });
 });

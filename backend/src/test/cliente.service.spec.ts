@@ -77,6 +77,12 @@ describe('ClienteService', () => {
         page: 1,
         limit: 10,
         totalPages: 1,
+        hasMore: false,
+        filters: {
+          search: null,
+          sortBy: 'createdAt',
+          sortOrder: 'DESC'
+        }
       });
     });
   });

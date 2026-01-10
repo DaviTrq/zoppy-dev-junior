@@ -74,7 +74,7 @@ describe('ClienteController', () => {
 
       const result = await controller.getClients(1, 10, 'João');
 
-      expect(service.findAll).toHaveBeenCalledWith(1, 10, 'João');
+      expect(service.findAll).toHaveBeenCalledWith(1, 10, 'João', 'createdAt', 'DESC');
       expect(result).toEqual(mockResponse);
     });
 
@@ -90,7 +90,7 @@ describe('ClienteController', () => {
 
       const result = await controller.getClients();
 
-      expect(service.findAll).toHaveBeenCalledWith(undefined, undefined, undefined);
+      expect(service.findAll).toHaveBeenCalledWith(1, 10, undefined, 'createdAt', 'DESC');
       expect(result).toEqual(mockResponse);
     });
   });
@@ -129,6 +129,24 @@ describe('ClienteController', () => {
       await controller.deleteClient(1);
 
       expect(service.remove).toHaveBeenCalledWith(1);
+    });
+  });
+
+  describe('validation methods', () => {
+    it('should handle invalid search parameters', async () => {
+      const mockResponse = {
+        data: [mockCliente],
+        total: 1,
+        page: 1,
+        totalPages: 1,
+      };
+
+      mockClienteService.findAll.mockResolvedValue(mockResponse);
+
+      // Test with undefined parameters
+      await controller.getClients(undefined, undefined, undefined, undefined, undefined);
+      
+      expect(service.findAll).toHaveBeenCalledWith(1, 10, undefined, 'createdAt', 'DESC');
     });
   });
 });

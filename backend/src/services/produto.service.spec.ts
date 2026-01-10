@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/sequelize';
 import { NotFoundException } from '@nestjs/common';
+import { Op } from 'sequelize';
 import { ProdutoService } from './produto.service';
 import { Produto } from '../entities/produto.entity';
 import { Cliente } from '../entities/cliente.entity';
@@ -102,9 +103,9 @@ describe('ProdutoService', () => {
 
       expect(mockProdutoModel.findAndCountAll).toHaveBeenCalledWith({
         where: {
-          $or: [
-            { nome: { $like: '%Produto%' } },
-            { descricao: { $like: '%Produto%' } },
+          [Op.or]: [
+            { nome: { [Op.like]: '%Produto%' } },
+            { descricao: { [Op.like]: '%Produto%' } },
           ],
         },
         include: [{ model: Cliente, attributes: ['id', 'nome'] }],
@@ -133,7 +134,7 @@ describe('ProdutoService', () => {
       mockProdutoModel.findByPk.mockResolvedValue(null);
 
       await expect(service.findOne(999)).rejects.toThrow(NotFoundException);
-      await expect(service.findOne(999)).rejects.toThrow('Produto 999 não encontrado');
+      await expect(service.findOne(999)).rejects.toThrow('Product with ID 999 not found');
     });
   });
 
@@ -179,6 +180,47 @@ describe('ProdutoService', () => {
       mockProdutoModel.findByPk.mockResolvedValue(null);
 
       await expect(service.remove(999)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('buildSearchCondition', () => {
+    it('should return empty object when search is empty', async () => {
+      mockProdutoModel.findAndCountAll.mockResolvedValue({ count: 0, rows: [] });
+      
+      await service.findAll(1, 10, '');
+      
+      expect(mockProdutoModel.findAndCountAll).toHaveBeenCalledWith(
+        expect.objectContaining({ where: {} })
+      );
+    });
+
+    it('should filter by price range', async () => {
+      mockProdutoModel.findAndCountAll.mockResolvedValue({ count: 1, rows: [mockProduto] });
+      
+      await service.findAll(1, 10, undefined, 10, 100);
+      
+      expect(mockProdutoModel.findAndCountAll).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            preco: {
+              [Op.gte]: 10,
+              [Op.lte]: 100
+            }
+          }
+        })
+      );
+    });
+
+    it('should filter by clienteId', async () => {
+      mockProdutoModel.findAndCountAll.mockResolvedValue({ count: 1, rows: [mockProduto] });
+      
+      await service.findAll(1, 10, undefined, undefined, undefined, 1);
+      
+      expect(mockProdutoModel.findAndCountAll).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { clienteId: 1 }
+        })
+      );
     });
   });
 });
