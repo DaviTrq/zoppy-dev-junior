@@ -48,6 +48,9 @@ import { Cliente, PaginatedResponse } from '../models/models';
           <div class="text-secondary text-sm mb-1">{{ cliente.email }}</div>
           <div class="text-secondary text-sm mb-3">{{ cliente.telefone || '-' }}</div>
           <div class="mobile-card-actions">
+            <button (click)="onViewProducts(cliente.id!)" class="btn-secondary mobile-card-button">
+              Ver Produtos
+            </button>
             <button (click)="onEdit(cliente.id!)" class="btn-secondary mobile-card-button">
               Editar
             </button>
@@ -83,6 +86,9 @@ import { Cliente, PaginatedResponse } from '../models/models';
                 </td>
                 <td class="table-cell text-right">
                   <div class="table-actions">
+                    <button (click)="onViewProducts(cliente.id!)" class="btn-secondary table-button">
+                      Ver Produtos
+                    </button>
                     <button (click)="onEdit(cliente.id!)" class="btn-secondary table-button">
                       Editar
                     </button>
@@ -186,5 +192,9 @@ export class ClienteListComponent implements OnInit, OnDestroy {
 
   onEdit(id: number) {
     this.router.navigate(['/clientes', id]);
+  }
+
+  onViewProducts(clienteId: number) {
+    this.router.navigate(['/produtos'], { queryParams: { clienteId } });
   }
 }

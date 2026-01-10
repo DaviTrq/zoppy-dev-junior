@@ -57,9 +57,18 @@ export class ProdutoService {
     return produto;
   }
 
-  async update(id: number, updateProdutoDto: UpdateProdutoDto): Promise<Produto> {
+  async update(id: number, updateProdutoDto: any): Promise<Produto> {
+    console.log('=== SERVICE UPDATE ===');
+    console.log('ID:', id);
+    console.log('Data:', updateProdutoDto);
+    
     const produto = await this.findOne(id);
-    return await produto.update(updateProdutoDto);
+    console.log('Found product:', produto.nome);
+    
+    const result = await produto.update(updateProdutoDto);
+    console.log('Updated successfully');
+    
+    return result;
   }
 
   async remove(id: number): Promise<void> {

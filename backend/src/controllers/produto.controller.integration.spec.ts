@@ -32,7 +32,7 @@ describe('ProdutoController Integration', () => {
       
       // Test high page number - should work as controller doesn't validate this
       await controller.getProducts('9999', '10', undefined);
-      expect(service.findAll).toHaveBeenCalledWith(9999, 10, undefined);
+      expect(service.findAll).toHaveBeenCalledWith(9999, 10, undefined, undefined, undefined, undefined);
     });
 
     it('should validate limit values', async () => {
@@ -40,7 +40,7 @@ describe('ProdutoController Integration', () => {
       
       // Test high limit - should work as controller doesn't validate this
       await controller.getProducts('1', '999', undefined);
-      expect(service.findAll).toHaveBeenCalledWith(1, 999, undefined);
+      expect(service.findAll).toHaveBeenCalledWith(1, 999, undefined, undefined, undefined, undefined);
     });
 
     it('should handle invalid string numbers', async () => {
@@ -48,21 +48,21 @@ describe('ProdutoController Integration', () => {
       
       // Test invalid page string - should default to 1
       await controller.getProducts('invalid', '10', undefined);
-      expect(service.findAll).toHaveBeenCalledWith(NaN, 10, undefined);
+      expect(service.findAll).toHaveBeenCalledWith(NaN, 10, undefined, undefined, undefined, undefined);
     });
 
     it('should handle zero values', async () => {
       mockProdutoService.findAll.mockResolvedValue({ data: [], total: 0 });
       
       await controller.getProducts('0', '0', undefined);
-      expect(service.findAll).toHaveBeenCalledWith(0, 0, undefined);
+      expect(service.findAll).toHaveBeenCalledWith(0, 0, undefined, undefined, undefined, undefined);
     });
 
     it('should handle negative values', async () => {
       mockProdutoService.findAll.mockResolvedValue({ data: [], total: 0 });
       
       await controller.getProducts('-1', '-5', undefined);
-      expect(service.findAll).toHaveBeenCalledWith(-1, -5, undefined);
+      expect(service.findAll).toHaveBeenCalledWith(-1, -5, undefined, undefined, undefined, undefined);
     });
 
     it('should test private validation methods', () => {

@@ -74,7 +74,7 @@ describe('ProdutoController', () => {
 
       const result = await controller.getProducts('1', '10', 'Produto');
 
-      expect(service.findAll).toHaveBeenCalledWith(1, 10, 'Produto');
+      expect(service.findAll).toHaveBeenCalledWith(1, 10, 'Produto', undefined, undefined, undefined);
       expect(result).toEqual(mockResponse);
     });
 
@@ -90,7 +90,7 @@ describe('ProdutoController', () => {
 
       const result = await controller.getProducts();
 
-      expect(service.findAll).toHaveBeenCalledWith(1, 10, undefined);
+      expect(service.findAll).toHaveBeenCalledWith(1, 10, undefined, undefined, undefined, undefined);
       expect(result).toEqual(mockResponse);
     });
   });
@@ -115,7 +115,7 @@ describe('ProdutoController', () => {
       const updatedProduto = { ...mockProduto, ...updateProdutoDto };
       mockProdutoService.update.mockResolvedValue(updatedProduto);
 
-      const result = await controller.updateProduct(1, updateProdutoDto);
+      const result = await controller.updateProduct('1', updateProdutoDto);
 
       expect(service.update).toHaveBeenCalledWith(1, updateProdutoDto);
       expect(result).toEqual(updatedProduto);
@@ -146,7 +146,7 @@ describe('ProdutoController', () => {
       // Test with string parameters
       await controller.getProducts('2', '5', 'test');
       
-      expect(service.findAll).toHaveBeenCalledWith(2, 5, 'test');
+      expect(service.findAll).toHaveBeenCalledWith(2, 5, 'test', undefined, undefined, undefined);
     });
 
     it('should handle undefined parameters', async () => {
@@ -161,7 +161,7 @@ describe('ProdutoController', () => {
 
       await controller.getProducts(undefined, undefined, undefined);
       
-      expect(service.findAll).toHaveBeenCalledWith(1, 10, undefined);
+      expect(service.findAll).toHaveBeenCalledWith(1, 10, undefined, undefined, undefined, undefined);
     });
   });
 });

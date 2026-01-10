@@ -14,13 +14,17 @@ export class ProdutoService {
 
   constructor(private http: HttpClient) {}
 
-  getProdutos(page: number = 1, limit: number = 10, search?: string): Observable<PaginatedResponse<Produto>> {
+  getProdutos(page: number = 1, limit: number = 10, search?: string, clienteId?: number): Observable<PaginatedResponse<Produto>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
     
     if (search?.trim()) {
       params = params.set('search', search.trim());
+    }
+    
+    if (clienteId) {
+      params = params.set('clienteId', clienteId.toString());
     }
     
     return this.http.get<PaginatedResponse<Produto>>(this.apiUrl, { params })
@@ -57,7 +61,7 @@ export class ProdutoService {
   }
 
   private sanitizeProductData(produto: Produto) {
-    const { id, cliente, ...data } = produto;
+    const { id, cliente, createdAt, updatedAt, ...data } = produto;
     return {
       ...data,
       clienteId: produto.clienteId

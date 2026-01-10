@@ -18,7 +18,7 @@ import { Produto, Cliente } from '../models/models';
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
-            Back
+            Voltar
           </button>
           <h1 class="page-title">
             {{ isEditMode ? 'Editar Produto' : 'Novo Produto' }}
@@ -37,6 +37,7 @@ import { Produto, Cliente } from '../models/models';
                   [(ngModel)]="formData.nome"
                   name="nome"
                   required
+                  [disabled]="false"
                   class="form-input"
                   placeholder="Digite o nome do produto"
                 >
@@ -141,7 +142,6 @@ export class ProdutoFormComponent implements OnInit {
   private loadProductData() {
     if (!this.productId) return;
     
-    this.isSaving = true;
     this.produtoService.getProdutoById(this.productId).subscribe({
       next: (produto) => {
         this.formData = {
@@ -151,11 +151,9 @@ export class ProdutoFormComponent implements OnInit {
           preco: produto.preco || 0,
           clienteId: produto.clienteId || 0
         };
-        this.isSaving = false;
       },
       error: (err) => {
         console.error('Failed to load product:', err);
-        this.isSaving = false;
       }
     });
   }
@@ -165,11 +163,14 @@ export class ProdutoFormComponent implements OnInit {
 
     this.isSaving = true;
 
-    // Ensure clienteId is a positive integer
     const productData = {
-      ...this.formData,
-      clienteId: parseInt(this.formData.clienteId.toString(), 10)
+      nome: this.formData.nome,
+      descricao: this.formData.descricao,
+      preco: Number(this.formData.preco),
+      clienteId: Number(this.formData.clienteId)
     };
+
+    console.log('Frontend sending:', productData);
 
     const request = this.isEditMode
       ? this.produtoService.updateProduto(this.formData.id!, productData)
@@ -179,7 +180,8 @@ export class ProdutoFormComponent implements OnInit {
       next: () => {
         this.router.navigate(['/produtos']);
       },
-      error: () => {
+      error: (error) => {
+        console.error('Frontend error:', error);
         this.isSaving = false;
         alert('Error saving product');
       }

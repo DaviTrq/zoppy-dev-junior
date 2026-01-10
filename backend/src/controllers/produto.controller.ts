@@ -39,14 +39,19 @@ export class ProdutoController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
     @Query('search') search?: string,
+    @Query('clienteId') clienteId?: string,
   ) {
     const pageNum = page ? parseInt(page) : 1;
     const limitNum = limit ? parseInt(limit) : 10;
+    const clienteIdNum = clienteId ? parseInt(clienteId) : undefined;
     
     return await this.produtoService.findAll(
       pageNum,
       limitNum,
-      search
+      search,
+      undefined,
+      undefined,
+      clienteIdNum
     );
   }
 
@@ -63,10 +68,26 @@ export class ProdutoController {
   @ApiResponse({ status: 200, description: 'Product updated successfully' })
   @ApiResponse({ status: 404, description: 'Product not found' })
   async updateProduct(
-    @Param('id', ParseIntPipe) id: number,
-    @Body(ValidationPipe) updateProdutoDto: UpdateProdutoDto,
+    @Param('id') id: string,
+    @Body() updateProdutoDto: any,
   ) {
-    return await this.produtoService.update(id, updateProdutoDto);
+    console.log('=== UPDATE ENDPOINT HIT ===');
+    console.log('ID:', id);
+    console.log('Body:', JSON.stringify(updateProdutoDto, null, 2));
+    
+    const numId = parseInt(id);
+    if (isNaN(numId)) {
+      throw new BadRequestException('Invalid ID');
+    }
+    
+    try {
+      const result = await this.produtoService.update(numId, updateProdutoDto);
+      console.log('SUCCESS');
+      return result;
+    } catch (error) {
+      console.error('ERROR:', error.message);
+      throw error;
+    }
   }
 
   @Delete(':id')

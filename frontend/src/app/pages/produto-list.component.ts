@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { ProdutoService } from '../services/produto.service';
 import { Produto, PaginatedResponse } from '../models/models';
@@ -123,13 +123,15 @@ export class ProdutoListComponent implements OnInit, OnDestroy {
   currentPage = 1;
   totalPages = 1;
   searchTerm = '';
+  clienteId?: number;
   isLoading = false;
   private destroy$ = new Subject<void>();
   private searchSubject = new Subject<string>();
 
   constructor(
     private produtoService: ProdutoService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.searchSubject.pipe(
       debounceTime(300),
@@ -141,7 +143,10 @@ export class ProdutoListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadData();
+    this.route.queryParams.subscribe(params => {
+      this.clienteId = params['clienteId'] ? +params['clienteId'] : undefined;
+      this.loadData();
+    });
   }
 
   ngOnDestroy() {
@@ -151,7 +156,7 @@ export class ProdutoListComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.isLoading = true;
-    this.produtoService.getProdutos(this.currentPage, 10, this.searchTerm)
+    this.produtoService.getProdutos(this.currentPage, 10, this.searchTerm, this.clienteId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: PaginatedResponse<Produto>) => {
