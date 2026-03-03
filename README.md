@@ -1,6 +1,5 @@
-# CRUD Clientes e Produtos - Zoppy
+# CRUD Clientes e Produtos
 
-> **Aplicação Full Stack desenvolvida para o desafio técnico da Zoppy**  
 > Sistema completo de gerenciamento de clientes e produtos com relacionamentos
 
 ## Sobre o Projeto
@@ -187,8 +186,6 @@ Este projeto foi fundamental para minha evolução técnica, permitindo aprofund
 - **Design responsivo** e UX
 - **Containerização** com Docker
 - **Segurança** e performance
-
-O desafio me proporcionou uma visão mais madura de aplicações full stack, organizadas, testáveis e próximas do que é usado em projetos reais.
 
 ---
 
